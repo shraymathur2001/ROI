@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registration form</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <h1>Contact Form</h1>
+    <form class="form" id="myForm" action="/submit-form" method="POST">
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+            <div class="progress-step active" data-title="Industry"></div>
+            <div class="progress-step" data-title="Deal Informations"></div>
+            <div class="progress-step" data-title="Employees"></div>
+            <div class="progress-step" data-title="Products"></div>
+        </div>
+
+        <!-- Steps -->
+        <div class="form-step active">
+            <h3>Select Industry</h3>
+            <div class="input-group">
+                <label for="industry">Industry :</label>
+                <input type="text" id="industry" name="industry" required>
+            </div>
+            <div class="">
+                <a class="btn btn-next">Next</a>
+            </div>
+        </div>
+        <div class="form-step ">
+            <h3>Deal Informations</h3>
+            <div class="input-group">
+                <label for="avgDealAmount">Average deals amount :</label>
+                <input type="text" id="avgDealAmount" name="avgDealAmount" required>
+            </div>
+            <div class="input-group">
+                <label for="avgDeals">Average number of deals per year :</label>
+                <input type="text" id="avgDeals" name="avgDeals" required></input>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-prev">Previous</a>
+                <a class="btn btn-next">Next</a>
+            </div>
+        </div>
+        <div class="form-step ">
+            <h3>No. Of Employees</h3>
+            <div class="experiences-group">
+                <div class="experience-item">
+                    <div class="input-group">
+                        <label for="Employee">Number of Employees:</label>
+                        <input type="text" id="employees" name="employees" required></input><br>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-prev">Previous</a>
+                <a class="btn btn-next">Next</a>
+            </div>
+        </div>
+        <div class="form-step ">
+            <h3>Products Selection</h3>
+            <div class="input-group">
+                <label for="Sales">Sales Cloud:</label>
+                <input type="checkbox" id="Sales" name="Sales"></input>
+            </div>
+            <div class="input-group">
+                <label for="Service">Service Cloud:</label>
+                <input type="checkbox" id="Service" name="Service"></input>
+            </div>
+            <div class="input-group">
+                <label for="cgCloud">CG Cloud :</label>
+                <input type="checkbox" id="cgCloud" name="cgCloud"></input>
+            </div>
+            <div class="input-group">
+                <label for="npsp">NPSP :</label>
+                <input type="checkbox" id="npsp" name="npsp"></input>
+            </div>
+            <div class="input-group">
+                <label for="cpqCloud">CPQ</label>
+                <input type="checkbox" id="cpqCloud" name="cpqCloud"></input>
+            </div>
+            <div class="input-group">
+                <label for="serviceCloudVoice">Service Cloud Voice :</label>
+                <input type="checkbox" id="serviceCloudVoice" name="serviceCloudVoice"></input>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-prev">Previous</a>
+                <input type="submit" value="Complete" name="complete" class="btn btn-complete" onsubmit="formData()">
+            </div>
+        </div>
+    </form>
+    <script src="./roi.js" defer></script>
+    <script type="module" src="../form.js"></script>
+</body>
+
+</html>
