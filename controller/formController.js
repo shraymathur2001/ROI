@@ -3,6 +3,14 @@ const con = require('../dbConnection');
 var salesCloud = {}; //stores sales cloud efficiency data
 var cgCloud = {}; //stores CG cloud efficiency data
 var serviceCloud = {}; //stores service cloud efficiency data
+var marketingCloud = {};
+var educationCloud = {};
+var nonProfitCloud = {};
+var manufacturingCloud = {};
+var healthCloud = {};
+var financialCloud = {};
+var mediaCloud = {};
+var automotiveCloud = {};
 var customerInput2 = {}; //stores the customer input 2 table data
 var customerInput1 = {}; //stores the customer input 1 table data
 var salesCloudLicenses = {}; //stores sales cloud crm licenses table data
@@ -20,24 +28,7 @@ class CaluclateROI {
         customerInput1['Number of Employees'] = req.body.Employees;
 
         for (const key in req.body.SalesforceProducts) {
-            if (key == 'Sales') {
-                customerInput2['Sales Cloud'] = 'True'
-            }
-            if (key == 'Support') {
-                customerInput2['Service Cloud'] = 'True'
-            }
-            if (key == 'ConsumerGood') {
-                customerInput2['CG Cloud'] = 'True'
-            }
-            if (key == 'NonProfit') {
-                customerInput2['NPSP'] = 'True'
-            }
-            if (key == 'CPQ') {
-                customerInput2['CPQ'] = 'True'
-            }
-            if (key == 'ServiceCloudVoice') {
-                customerInput2['Service Cloud Voice'] = 'True'
-            }
+            customerInput2[key] = 'True'
         }
 
         console.log(customerInput1);
@@ -48,6 +39,7 @@ class CaluclateROI {
 
         try {
             setTimeout(() => {
+                console.log('Efficiency :- ', efficiency);
                 res.send({ "Efficiency": efficiency })
             }, 10);
 
@@ -60,30 +52,34 @@ class CaluclateROI {
     static cloudFeatures = async (req, res) => {
 
         var industry = req.body.Industry;
-        var cloudName = req.body.CloudName;
         var response = {};
-        var optionContentList = [];
-
-        console.log(industry, ' ', cloudName);
 
         try {
             if (con.isConnected) {
-                con.connection.query(`SELECT * FROM ROITable WHERE industry = '${industry}' AND cloud_name = '${cloudName}' `, (err, result, field) => {
+                con.connection.query(`SELECT * FROM ROITable WHERE industry = '${industry}' `, (err, result, field) => {
 
                     if (err) {
                         res.status(400).json({ 'Error': 'An unexpected error has occured' });
                     }
 
-                    console.log(result);
-
+                    //key as cloud name and value as list of features and items of the list are object
+                    var optionContent = new Map();
                     result.forEach((item) => {
-                        var optionContent = {}
-                        optionContent[item.option_name] = item.option_content;
-                        optionContentList.push(optionContent)
+                        console.log(item);
+
+                        var temp = [];
+                        if(optionContent.has(item.cloud_name)) {
+                            temp = optionContent.get(item.cloud_name)
+                        }
+                        var tempListItem = {};
+                        tempListItem[item.option_name] = item.option_content;
+                        temp.push(tempListItem);
+
+                        optionContent.set(item.cloud_name, temp);
                     });
 
-                    response[cloudName] = optionContentList;
-                    //console.log(response);
+                    //convert map to object
+                    response = Array.from(optionContent, ([CloudName, Features]) => ({ CloudName, Features }));
                     res.send(response);
                 });
             }
@@ -130,14 +126,14 @@ class ROIHelper {
         if (con.isConnected) {
 
             //GET ALL RECORDS OF SALES CLOUD IMPLEMENTATION EFFICIENCY
-            con.connection.query(`SELECT Industry, Efficiency FROM SalesCloud_Implementation_Efficiency WHERE Industry = '${customerInput1['Industry']}' `, (err, result, field) => {
+            con.connection.query(`SELECT * FROM SalesCloud_Implementation_Efficiency WHERE Industry = '${customerInput1['Industry']}' `, (err, result, field) => {
                 console.log(result);
                 if (err) {
                     console.log("Failed to fetch data", err);
                 }
                 else {
                     result.forEach((item) => {
-                        salesCloud[item.Industry] = item.Efficiency;
+                        salesCloud[item.Industry] = item.medium_Efficiency;
                     })
                     console.log('salesCloud -->', salesCloud);
                 }
@@ -150,7 +146,7 @@ class ROIHelper {
                 }
                 else {
                     result.forEach((item) => {
-                        serviceCloud[item.Industry] = item.Efficiency;
+                        serviceCloud[item.Industry] = item.medium_Efficiency;
                     })
 
                     console.log('serviceCloud -->', serviceCloud);
@@ -164,16 +160,129 @@ class ROIHelper {
                 }
                 else {
                     result.forEach((item) => {
-                        cgCloud[item.Industry] = item.Efficiency;
+                        cgCloud[item.Industry] = item.medium_Efficiency;
                     })
 
                     console.log('cgCloud -->', cgCloud);
+                }
+            });
+
+            //GET ALL RECORDS OF MARKETING CLOUD IMPLEMENTATION EFFICIENCY
+            con.connection.query(`SELECT * FROM MarketingCloud_Implementation_Efficiency WHERE Industry = '${customerInput1['Industry']}' `, (err, result, field) => {
+                if (err) {
+                    console.log("Failed to fetch the record");
+                }
+                else {
+                    result.forEach((item) => {
+                        marketingCloud[item.Industry] = item.medium_Efficiency;
+                    })
+
+                    console.log('marketingCloud -->', marketingCloud);
+                }
+            });
+
+            //GET ALL RECORDS OF EDUCATION CLOUD IMPLEMENTATION EFFICIENCY
+            con.connection.query(`SELECT * FROM EducationCloud_Implementation_Efficiency WHERE Industry = '${customerInput1['Industry']}' `, (err, result, field) => {
+                if (err) {
+                    console.log("Failed to fetch the record");
+                }
+                else {
+                    result.forEach((item) => {
+                        educationCloud[item.Industry] = item.medium_Efficiency;
+                    })
+
+                    console.log('educationCloud -->', educationCloud);
+                }
+            });
+
+            //GET ALL RECORDS OF NON PROFIT CLOUD IMPLEMENTATION EFFICIENCY
+            con.connection.query(`SELECT * FROM NonProfitCloud_Implementation_Efficiency WHERE Industry = '${customerInput1['Industry']}' `, (err, result, field) => {
+                if (err) {
+                    console.log("Failed to fetch the record");
+                }
+                else {
+                    result.forEach((item) => {
+                        nonProfitCloud[item.Industry] = item.medium_Efficiency;
+                    })
+
+                    console.log('nonProfitCloud -->', nonProfitCloud);
+                }
+            });
+
+            //GET ALL RECORDS OF MANUFACTURING CLOUD IMPLEMENTATION EFFICIENCY
+            con.connection.query(`SELECT * FROM ManufacturingCloud_Implementation_Efficiency WHERE Industry = '${customerInput1['Industry']}' `, (err, result, field) => {
+                if (err) {
+                    console.log("Failed to fetch the record");
+                }
+                else {
+                    result.forEach((item) => {
+                        manufacturingCloud[item.Industry] = item.medium_Efficiency;
+                    })
+
+                    console.log('manufacturingCloud -->', manufacturingCloud);
+                }
+            });
+
+            //GET ALL RECORDS OF HEALTH CLOUD IMPLEMENTATION EFFICIENCY
+            con.connection.query(`SELECT * FROM HealthCloud_Implementation_Efficiency WHERE Industry = '${customerInput1['Industry']}' `, (err, result, field) => {
+                if (err) {
+                    console.log("Failed to fetch the record");
+                }
+                else {
+                    result.forEach((item) => {
+                        healthCloud[item.Industry] = item.medium_Efficiency;
+                    })
+
+                    console.log('healthCloud -->', healthCloud);
+                }
+            });
+
+            //GET ALL RECORDS OF FINANCIAL CLOUD IMPLEMENTATION EFFICIENCY
+            con.connection.query(`SELECT * FROM FinancialCloud_Implementation_Efficiency WHERE Industry = '${customerInput1['Industry']}' `, (err, result, field) => {
+                if (err) {
+                    console.log("Failed to fetch the record");
+                }
+                else {
+                    result.forEach((item) => {
+                        financialCloud[item.Industry] = item.medium_Efficiency;
+                    })
+
+                    console.log('financialCloud -->', financialCloud);
+                }
+            });
+
+            //GET ALL RECORDS OF MEDIA CLOUD IMPLEMENTATION EFFICIENCY
+            con.connection.query(`SELECT * FROM MediaCloud_Implementation_Efficiency WHERE Industry = '${customerInput1['Industry']}' `, (err, result, field) => {
+                if (err) {
+                    console.log("Failed to fetch the record");
+                }
+                else {
+                    result.forEach((item) => {
+                        mediaCloud[item.Industry] = item.medium_Efficiency;
+                    })
+
+                    console.log('mediaCloud -->', mediaCloud);
+                }
+            });
+
+            //GET ALL RECORDS OF AUTOMOTIVE CLOUD IMPLEMENTATION EFFICIENCY
+            con.connection.query(`SELECT * FROM AutomotiveCloud_Implementation_Efficiency WHERE Industry = '${customerInput1['Industry']}' `, (err, result, field) => {
+                if (err) {
+                    console.log("Failed to fetch the record");
+                }
+                else {
+                    result.forEach((item) => {
+                        automotiveCloud[item.Industry] = item.medium_Efficiency;
+                    })
+
+                    console.log('automotiveCloud -->', automotiveCloud);
 
                     this.getEfficiency();
                     this.getRevenueAfterInvestment();
-                    // this.getReturnOfInvestment();
                 }
             });
+
+            console.log("hello");
         }
     }
 
@@ -188,7 +297,7 @@ class ROIHelper {
             }
         }
 
-        sumOfEfficiency = salesCloud[`${customerInput1['Industry']}`] + serviceCloud[`${customerInput1['Industry']}`] + cgCloud[`${customerInput1['Industry']}`];
+        sumOfEfficiency = salesCloud[`${customerInput1['Industry']}`] + serviceCloud[`${customerInput1['Industry']}`] + cgCloud[`${customerInput1['Industry']}`] + marketingCloud[`${customerInput1['Industry']}`] + manufacturingCloud[`${customerInput1['Industry']}`] + educationCloud[`${customerInput1['Industry']}`] + nonProfitCloud[`${customerInput1['Industry']}`] + healthCloud[`${customerInput1['Industry']}`] + financialCloud[`${customerInput1['Industry']}`] + mediaCloud[`${customerInput1['Industry']}`] + automotiveCloud[`${customerInput1['Industry']}`];
         efficiency = (sumOfEfficiency / (countOfEfficiency * 100)) * 100;
 
         console.log('sumOfEfficiency -->', sumOfEfficiency);
