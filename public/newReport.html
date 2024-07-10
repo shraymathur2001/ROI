@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="newReport.css">
+</head>
+
+<body>
+
+    <div id="divToExport">
+        <div id="cyntexaLogo">
+            <img src="../resources/images-removebg-preview.png" alt="cyntexa" height="50" width="200">
+        </div>
+
+        <br>
+
+        <div class="container">
+            <h1>Salesforce ROI Report 2024 </h1>
+            <br>
+            <p>This is only indicative data based on the information you have provided.</p>
+            <p>Understanding your return on investment (ROI) can help you achieve your goal as you plan your long-term
+                investing strategy. With this calculator, you can see how your revenue, gross margin and cost control
+                could
+                improve.</p>
+
+            <br>
+            <hr>
+            <br>
+
+            <div class="container">
+                <canvas id="myChart" style="max-width:100%; height:10rem;"></canvas>
+
+                <p id="graphFooter">Revenue in US Dollars</p>
+                <div>
+                    <p class="dot current"></p>
+                    <p style="margin-left: 370px;">Current Revenue</p>
+                </div>
+                <br>
+                <div>
+                    <div class="dot projected"></div>
+                    <p style="margin-left: 356px;">Projected Revenue</p>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <div id="potentialBlock">
+                            <h5>There is a potential to increase your revenue by 72%</h5>
+                            <br>
+                            <h5>
+                                Your potential new revenue: $172,000,000.00
+                            </h5>
+                            <h5>
+                                Your current revenue: $100,000,000.00
+                            </h5>
+                        </div>
+                    </div>
+
+                    <div class="col-sm">
+                        <div class="card" style="width: 290px; height:170px; background-color:whitesmoke;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                                            class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5" />
+                                        </svg>
+                                    </div>
+                                    <div class="col-sm">
+                                        <h5 class="card-title">Additional Revenue Potential</h5>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm"></div>
+                                    <div class="col-sm">
+                                        <h4 class="card-text">$72,000,000</h4>
+                                    </div>
+                                    <div class="col-sm"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                </div>
+
+                <br>
+
+                <div class="card" style="width: 270px; height:150px; background-color:whitesmoke;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                                    class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5" />
+                                </svg>
+                            </div>
+                            <div class="col-sm">
+                                <h5 class="card-title">Additional Revenue Potential</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm"></div>
+                            <div class="col-sm">
+                                <h4 class="card-text">$72,000,000</h4>
+                            </div>
+                            <div class="col-sm"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <br>
+            <br>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                        <canvas id="myDonutChart" style="max-width:600px"></canvas>
+                    </div>
+                    <div class="col-sm">
+                        <h3>Direct Sales</h3>
+                        <hr>
+                        <p>Current: $20,000,000.00</p>
+                        <p> Projected: $34,400,000.00</p>
+                        <br>
+                        <h3>Self Service</h3>
+                        <hr>
+                        <p>Current: $20,000,000.00</p>
+                        <p> Projected: $34,400,000.00</p>
+                    </div>
+                    <div class="col-sm" style="width: 400rem !important;">
+                        <h3>Direct Sales</h3>
+                        <hr>
+                        <p>Current: $20,000,000.00</p>
+                        <p> Projected: $34,400,000.00</p>
+                        <br>
+                        <h3>Self Service</h3>
+                        <hr>
+                        <p>Current: $20,000,000.00</p>
+                        <p> Projected: $34,400,000.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <hr>
+            <br>
+
+            <h3>Additional Recommendations</h3>
+
+            <p>Enable Full Salesforce DevOps Automation</p>
+
+            <h4>Benefits</h4>
+            <ul>
+                <li>Decrease Application Management Costs</li>
+                <li>Accelerate Time To Market</li>
+                <li>Expect Up To 15% Of Efficiency Gains</li>
+                <li>Enable Profitability Growth</li>
+            </ul>
+
+            <br>
+            <hr>
+            <br>
+
+            <p>We recommend deploying advanced pricing automation, deploying / upgrading CPQ solution, and consider
+                evaluating existing pricing strategy with shift to value based pricing</p>
+
+            <h4>Points of View</h4>
+            <ul>
+                <li>Guiding Principles for Orchestrating IT-driven Digital</li>
+                <li>Transformation</li>
+                <li>5 Steps to Improving Your Salesforce ROI</li>
+                <li>Salesforce State of the Connected Customer</li>
+                <li>Total Economic Effort of Salesforce Experience Cloud</li>
+            </ul>
+            <hr>
+
+            <p>Thank you for using Cyntexa Salesforce ROI Calculator. Hope the detailed report helps you in optimizing
+                your
+                Salesforce platform.</p>
+            <p>Please feel free to <a href="https://cyntexa.com/contact-us/">contact us</a></p>
+        </div>
+    </div>
+    <button class="download-btn" onclick="generatePDF()">Download Full Report</button>
+
+
+</body>
+<script>
+
+    function generatePDF() {
+
+        // Choose the element id which you want to export.
+        var element = document.getElementById('divToExport');
+        //element.style.width = '700px';
+        var opt = {
+            margin: 1,
+            filename: 'ROI.pdf',
+            html2canvas: { scale: 3, logging: true, letterRendering: true },
+            jsPDF: { unit: 'in', format: 'A3', orientation: 'portrait' }
+        };
+
+        // choose the element and pass it to html2pdf() function and call the save() on it to save as pdf.
+        html2pdf().set(opt).from(element).save();
+    }
+
+
+    var xValues = ["Current Revenue", "Projected Revenue"];
+
+    //add current revenue value at index 0 and projected value at index 1
+    var yValues = [55.5, 83, 0, 100];
+    var barColors = ["rgb(132, 107, 137)", "rgb(56, 12, 64)"];
+
+    new Chart("myChart", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+            }]
+        },
+        options: {
+            legend: { display: false },
+            scales: {
+                xAxes: [{
+                    barPercentage: 0.15
+                }],
+            },
+            title: {
+                display: false,
+            }
+        }
+    });
+
+    //percentage that user will enter
+    var myData = [40, 40, 20, 30];
+    new Chart("myDonutChart", {
+        type: 'doughnut',
+        data: {
+            datasets: [
+                {
+                    data: myData,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(56, 12, 64)'
+                    ],
+                },
+            ],
+            labels: ['Direct Sales', 'Partner', 'Self Service', 'Marketing'],
+        },
+        options: {
+            plugins: {
+                datalabels: {
+                    formatter: (value) => {
+                        return value + '%';
+                    },
+                },
+            },
+        },
+    })
+</script>
+
+</html>

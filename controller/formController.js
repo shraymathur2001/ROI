@@ -41,7 +41,7 @@ class CaluclateROI {
             setTimeout(() => {
                 console.log('Efficiency :- ', efficiency);
                 res.send({ "Efficiency": efficiency })
-            }, 10);
+            }, 100);
 
         } catch (error) {
             res.send({ "Failed": "Something went wrong" })
@@ -115,6 +115,35 @@ class CaluclateROI {
             res.status(200).json({ "Licenses": licenseAndCostMapping, "TotalAmount": totalAmount });
         })
     }
+
+    static storeUserData = (req, res) => {
+
+        con.connection.query(`INSERT INTO LeadData VALUES ('${req.body.CompanyName}', '${req.body.Employees}', '${req.body.CurrentRevenue}')`, (err, result, field) => {
+            if(err) {
+                console.log('Error', err);
+                res.send({'Error' : 'Failed to store record'})
+            }
+
+            res.send({'Success' : 'Lead stored successfully'});
+
+        })
+    }
+
+    // static dataBackend = async (req, res) => {
+    //     var featureOption = req.body.Option;
+    //     var queryData = [featureOption];
+        
+    //     con.connection.query('SELECT * FROM ROITable WHERE option_name IN (?)', queryData, (err, result, field) => {
+
+    //         console.log(result);
+
+    //         result.forEach((item) => {
+
+    //         })
+    //     });
+
+    //     res.send("ok");
+    // }
 
 }
 

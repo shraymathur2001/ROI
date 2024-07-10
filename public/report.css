@@ -3,6 +3,10 @@
     grid-template-columns: auto auto auto;
   }
 
+.container {
+    width: 70rem;
+}
+
 #cyntexaLogo {
     margin-top: 50px;
     margin-right: 80px;
@@ -15,4 +19,9 @@
     padding: 25px;
     font-family:sans-serif;
     border-radius: 10px;
+}
+
+@page {
+    size: A4;
+    margin: minimum;
 }

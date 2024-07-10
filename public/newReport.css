@@ -1,0 +1,54 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+
+.dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%; /* to make it round */
+    display: inline-block;
+}
+
+.current {
+    background-color: rgb(132, 107, 137);
+    margin-right: 410px;
+    float: inline-end;
+}
+
+.projected {
+    background-color: rgb(56, 12, 64);
+    margin-right: 410px;
+    float: inline-end;
+
+}
+
+
+.container {
+    width: 60rem;
+}
+
+#cyntexaLogo {
+    margin-top: 50px;
+    margin-right: 100px;
+    text-align: right;
+}
+
+#potentialBlock {
+    text-wrap:wrap; 
+    width:35rem;
+    padding: 25px;
+    font-family:sans-serif;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#graphFooter {
+    text-align: center;
+    color: grey;
+}
+
+
+
+
+

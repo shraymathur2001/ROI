@@ -2,10 +2,11 @@ const router = require('express').Router();
 const formControl = require('../controller/formController');
 
 // routes
-// router.post('/submit-form', formControl.calculation);
+router.post('/storeCompanyInfo', formControl.storeUserData);
 router.post('/get-efficiency', formControl.efficiency);
-router.get('/get-features', formControl.cloudFeatures);
+router.post('/get-features', formControl.cloudFeatures);
 router.get('/get-licensesAndCost', formControl.licensesAndCost);
+// router.post('/tobackend', formControl.dataBackend);
 
 
 module.exports = router;
