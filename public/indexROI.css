@@ -842,26 +842,7 @@ p {
     float: inline-end;
     margin-left: 10px;
 }
-.info-button:hover {
-    background-color: #0056B3;
-}
-.info-tooltip {
-    display: none;
-    position: absolute;
-    top: -35px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 8px;
-    border-radius: 5px;
-    white-space: nowrap;
-    z-index: 1000;
-}
 
-.info-button-container:hover .info-tooltip {
-    display: block;
-}
-.NotrelateApidata{
-	display: 'none'  !important;
+.timeline-content{
+    cursor: pointer;
 }

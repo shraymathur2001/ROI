@@ -1,3 +1,4 @@
+const Timelinescontent = document.querySelectorAll('.timeline-content')
 const SalesTeamSize = document.getElementById('SalesTeamSize')
 const MarketingTeamSize = document.getElementById('MarketingTeamSize')
 const SupportTeamSize = document.getElementById('SupportTeamSize')
@@ -32,6 +33,7 @@ let Circularprogresssbar = document.querySelector('.circular-progress');
 // select industry
 let GetCloudDetailsBasedOnIndustry = { "Industry": "General" };
 let htmlMarkup = ''
+let counter = 0;
 
 //first api callout on domcontent loaded in which I will get the General Data First
 let Data = []
@@ -148,7 +150,7 @@ function fetchindustrybasedcloud(raw, generalCloud, myHeaders) {
           FindpageApi[7] = cloud.CloudName;
           AddActivitytimelinequestions(7, FindpageApi[7], cloud.Features, 2, index)
           console.log("You selected Service Cloud.");
-        } else  {
+        } else {
           FindpageApi[8] = cloud.CloudName;
           AddActivitytimelinequestions(8, FindpageApi[8], cloud.Features, 3, index)
           console.log("You selected Manufacturing Cloud.");
@@ -191,13 +193,14 @@ function handleInputChange(event) {
 }
 
 
+
 function AddActivitytimelinequestions(stagenumber, cloudname, Features, selectnumber, index) {
   var newTimelineItem = document.createElement('div');
   newTimelineItem.className = 'timeline-item';
   // Create the inner HTML content for the new timeline item
   newTimelineItem.innerHTML = `
       <div data-page="${cloudname}" data-stage="${stagenumber}" class="timeline-icon"></div>
-      <p class="timeline-content">${cloudname}</p>
+      <p data-page="${cloudname}" data-stage="${stagenumber}" class="timeline-content">${cloudname}</p>
   `;
   // Append the new timeline item to the 'addclouds' element
   addclouds.appendChild(newTimelineItem);
@@ -207,26 +210,28 @@ function AddActivitytimelinequestions(stagenumber, cloudname, Features, selectnu
       newButtonDiv.className = 'btn info-button-container';
       newButtonDiv.setAttribute('data-value', key);
       // Create the inner HTML content for the new button
-      newButtonDiv.innerHTML += `${key}
-        <button class="info-button" id="infoButton${index}">i</button>
-        <div class="info-tooltip" id="infoTooltip${index}">${value}</div>
-    `;
+      newButtonDiv.innerHTML = `${key}
+            <button class="info-button" id="infoButton${counter}">i</button>
+        `;
       multiselectContainer[selectnumber].appendChild(newButtonDiv);
+      tippy(`#infoButton${counter}`, {
+        content: value,
+      });
+      counter += 1;
     }
-    // document.getElementById(`infoButton${index}`).addEventListener('mouseover', function () {
-    //   document.getElementById(`infoTooltip${index}`).style.display = 'block';
-    // });
-    // document.getElementById(`infoButton${index}`).addEventListener('mouseout', function () {
-    //   document.getElementById(`infoTooltip${index}`).style.display = 'none';
-    // });
   });
 
   if (stagenumber == 8) {
     console.log(cloudname)
     removeEventListeners('.timeline-icon');
+    removeEventListeners('.timeline-content');
+
     let timelineicons = document.querySelectorAll('.timeline-icon')
+    let Timelinescontents = document.querySelectorAll('.timeline-content')
     Timelineitem = document.querySelectorAll(".timeline-item");
     AttachmentEventTimelines(timelineicons);
+    //change
+    AttachmentEventTimelines(Timelinescontents);
     Attachtmultiselectoptionsevent();
   }
 
@@ -252,6 +257,9 @@ function AddActivitytimelinequestions(stagenumber, cloudname, Features, selectnu
   }
 }
 AttachmentEventTimelines(Timelines)
+AttachmentEventTimelines(Timelinescontent)
+
+
 function AttachmentEventTimelines(Timelines) {
   Timelines.forEach(function (CurrentTimeline) {
     CurrentTimeline.addEventListener('click', function (event) {
@@ -296,7 +304,7 @@ Nextbutton.forEach(function (nextbtn) {
 
 
 function checkallNextpages(pagenumber) {
-  if(CurrentPage=="Company Name") {
+  if (CurrentPage == "Company Name") {
     isInputValueNotEmpty(GetCompanyName.value, 0);
     if (isInputValid) {
       createreqbodyefficiency("CompanyName", GetCompanyName.value)
@@ -354,11 +362,12 @@ function checkallNextpages(pagenumber) {
   else {
     isInputValueNotEmpty(selectedValues.SalesforceProducts[CurrentPage][0], pagenumber);
     if (isInputValid) {
+      handledropdown(2)
       FetchEfficiency()
     }
-  } 
-  } 
-  
+  }
+}
+
 
 
 Previousbutton.forEach(function (Previousbutton) {
@@ -545,20 +554,25 @@ function checktimelineinputes(CurrentPage) {
   }
 }
 
+var efficiency;
 function FetchEfficiency() {
   const myHeaders = new Headers();
-  debugger;
   myHeaders.append("Content-Type", "application/json");
+
+  console.log();
   const requestOptions = {
     method: "POST",
     headers: myHeaders,
-    body: selectedValues,
+    body: JSON.stringify(selectedValues),
     redirect: "follow"
   };
 
   fetch("http://localhost:3000/get-efficiency", requestOptions)
     .then((response) => response.json())
-    .then((result) => console.log(result))
+    .then((result) => {
+      console.log('result -->', result.Efficiency);
+      efficiency = result.Efficiency;
+    })
     .catch((error) => console.error(error));
 }
 
@@ -574,4 +588,12 @@ function CheckInputValidityTimeline(inputValue) {
     throw "The field is required or the input format is incorrect."
 
   }
+}
+
+
+function viewReport() {
+  console.log(selectedValues);
+
+  window.open(`newReport.html?currentRevenue=${selectedValues['CurrentRevenue']}&efficiency=${efficiency}`, '_blank');
+
 }

@@ -26,6 +26,7 @@ class CaluclateROI {
         customerInput1['Industry'] = req.body.BusinessIndustry;
         customerInput1['Current Revenue'] = req.body.CurrentRevenue;
         customerInput1['Number of Employees'] = req.body.Employees;
+        customerInput1['SalesforceProducts'] = req.body.SalesforceProducts;
 
         for (const key in req.body.SalesforceProducts) {
             customerInput2[key] = 'True'
@@ -65,18 +66,39 @@ class CaluclateROI {
                     //key as cloud name and value as list of features and items of the list are object
                     var optionContent = new Map();
                     result.forEach((item) => {
-                        console.log(item);
+                        // console.log(item);
 
                         var temp = [];
-                        if(optionContent.has(item.cloud_name)) {
+                        if (optionContent.has(item.cloud_name)) {
                             temp = optionContent.get(item.cloud_name)
                         }
+
                         var tempListItem = {};
                         tempListItem[item.option_name] = item.option_content;
                         temp.push(tempListItem);
 
                         optionContent.set(item.cloud_name, temp);
                     });
+                    console.log(optionContent);
+
+
+                    optionContent.forEach((value, key) => {
+                        var removeDuplicate = new Set();
+                        var newList = [];
+                        value.forEach((item) => {
+                            removeDuplicate.add(JSON.stringify(item));
+                        })
+
+                        removeDuplicate.forEach((item) => {
+                            newList.push(JSON.parse(item))
+                        })
+
+                        optionContent.set(key, newList);
+                    })
+
+
+                    console.log(optionContent);
+
 
                     //convert map to object
                     response = Array.from(optionContent, ([CloudName, Features]) => ({ CloudName, Features }));
@@ -119,12 +141,12 @@ class CaluclateROI {
     static storeUserData = (req, res) => {
 
         con.connection.query(`INSERT INTO LeadData VALUES ('${req.body.CompanyName}', '${req.body.Employees}', '${req.body.CurrentRevenue}')`, (err, result, field) => {
-            if(err) {
+            if (err) {
                 console.log('Error', err);
-                res.send({'Error' : 'Failed to store record'})
+                res.send({ 'Error': 'Failed to store record' })
             }
 
-            res.send({'Success' : 'Lead stored successfully'});
+            res.send({ 'Success': 'Lead stored successfully' });
 
         })
     }
@@ -132,7 +154,7 @@ class CaluclateROI {
     // static dataBackend = async (req, res) => {
     //     var featureOption = req.body.Option;
     //     var queryData = [featureOption];
-        
+
     //     con.connection.query('SELECT * FROM ROITable WHERE option_name IN (?)', queryData, (err, result, field) => {
 
     //         console.log(result);
@@ -318,16 +340,46 @@ class ROIHelper {
     static getEfficiency = () => {
 
         var sumOfEfficiency = 0;
-        var countOfEfficiency = 0;
+        console.log(customerInput1['SalesforceProducts']);
 
-        for (const key in customerInput2) {
-            if (customerInput2[key] == 'True') {
-                countOfEfficiency += 1;
+        for(const key in customerInput1['SalesforceProducts']) {
+            if(key == 'Sales Cloud') {
+                sumOfEfficiency += salesCloud[`${customerInput1['Industry']}`];        
+            }
+            else if(key == 'Service Cloud') {
+                sumOfEfficiency += serviceCloud[`${customerInput1['Industry']}`];        
+            }
+            else if(key == 'Consumer Goods Cloud') {
+                sumOfEfficiency += cgCloud[`${customerInput1['Industry']}`];        
+            }
+            else if(key == 'Marketing Cloud') {
+                sumOfEfficiency += marketingCloud[`${customerInput1['Industry']}`];        
+            }
+            else if(key == 'Manufacturing Cloud') {
+                sumOfEfficiency += manufacturingCloud[`${customerInput1['Industry']}`];        
+            }
+            else if(key == 'Education Cloud') {
+                sumOfEfficiency += educationCloud[`${customerInput1['Industry']}`];        
+            }
+            else if(key == 'Non Profit Cloud') {
+                sumOfEfficiency += nonProfitCloud[`${customerInput1['Industry']}`];        
+            }
+            else if(key == 'Health Cloud') {
+                sumOfEfficiency += healthCloud[`${customerInput1['Industry']}`];        
+            }
+            else if(key == 'Financial Cloud') {
+                sumOfEfficiency += financialCloud[`${customerInput1['Industry']}`];        
+            }
+            else if(key == 'Media Cloud') {
+                sumOfEfficiency += mediaCloud[`${customerInput1['Industry']}`];        
+            }
+            else if(key == 'Automotive Cloud') {
+                sumOfEfficiency += automotiveCloud[`${customerInput1['Industry']}`];        
             }
         }
 
-        sumOfEfficiency = salesCloud[`${customerInput1['Industry']}`] + serviceCloud[`${customerInput1['Industry']}`] + cgCloud[`${customerInput1['Industry']}`] + marketingCloud[`${customerInput1['Industry']}`] + manufacturingCloud[`${customerInput1['Industry']}`] + educationCloud[`${customerInput1['Industry']}`] + nonProfitCloud[`${customerInput1['Industry']}`] + healthCloud[`${customerInput1['Industry']}`] + financialCloud[`${customerInput1['Industry']}`] + mediaCloud[`${customerInput1['Industry']}`] + automotiveCloud[`${customerInput1['Industry']}`];
-        efficiency = (sumOfEfficiency / (countOfEfficiency * 100)) * 100;
+        // sumOfEfficiency = salesCloud[`${customerInput1['Industry']}`] + serviceCloud[`${customerInput1['Industry']}`] + cgCloud[`${customerInput1['Industry']}`] + marketingCloud[`${customerInput1['Industry']}`] + manufacturingCloud[`${customerInput1['Industry']}`] + educationCloud[`${customerInput1['Industry']}`] + nonProfitCloud[`${customerInput1['Industry']}`] + healthCloud[`${customerInput1['Industry']}`] + financialCloud[`${customerInput1['Industry']}`] + mediaCloud[`${customerInput1['Industry']}`] + automotiveCloud[`${customerInput1['Industry']}`];
+        efficiency = (sumOfEfficiency / 4);
 
         console.log('sumOfEfficiency -->', sumOfEfficiency);
         console.log('efficiency -->', efficiency);
@@ -335,7 +387,7 @@ class ROIHelper {
 
     static getRevenueAfterInvestment = () => {
 
-        revenueAfterInvestment = customerInput1['Current Revenue'] + ((customerInput1['Current Revenue']) * (efficiency / 100));
+        revenueAfterInvestment = parseInt(customerInput1['Current Revenue']) + (parseInt(customerInput1['Current Revenue']) * (efficiency / 100));
         console.log('revenueAfterInvestment -->', revenueAfterInvestment);
     }
 

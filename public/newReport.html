@@ -14,13 +14,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
     <link rel="stylesheet" href="newReport.css">
+    <script src="indexROI.js"></script>
 </head>
 
 <body>
 
+    <button class="download-btn" onclick="generatePDF()">Download Full Report</button>
     <div id="divToExport">
         <div id="cyntexaLogo">
-            <img src="../resources/images-removebg-preview.png" alt="cyntexa" height="50" width="200">
+            <img src="../public/Assests/img/images-removebg-preview.png" alt="cyntexa" height="50" width="200">
         </div>
 
         <br>
@@ -58,13 +60,13 @@
                 <div class="row">
                     <div class="col-sm">
                         <div id="potentialBlock">
-                            <h5>There is a potential to increase your revenue by 72%</h5>
+                            <h5>There is a potential to increase your revenue by <strong id="efficiency"></strong></h5>
                             <br>
                             <h5>
-                                Your potential new revenue: $172,000,000.00
+                                Your potential new revenue: <strong id="additionalRevenue1"></strong>
                             </h5>
                             <h5>
-                                Your current revenue: $100,000,000.00
+                                Your current revenue: <strong id="currentRevenue1"></strong>
                             </h5>
                         </div>
                     </div>
@@ -81,13 +83,14 @@
                                         </svg>
                                     </div>
                                     <div class="col-sm">
-                                        <h5 class="card-title">Additional Revenue Potential</h5>
+                                        <h5 class="card-title">Current Revenue </h5>
                                     </div>
                                 </div>
+                                <br>
                                 <div class="row">
                                     <div class="col-sm"></div>
                                     <div class="col-sm">
-                                        <h4 class="card-text">$72,000,000</h4>
+                                        <h4 class="card-text" id="currentRevenue"></h4>
                                     </div>
                                     <div class="col-sm"></div>
                                 </div>
@@ -117,7 +120,7 @@
                         <div class="row">
                             <div class="col-sm"></div>
                             <div class="col-sm">
-                                <h4 class="card-text">$72,000,000</h4>
+                                <h4 class="card-text" id="additionalRevenue"></h4>
                             </div>
                             <div class="col-sm"></div>
                         </div>
@@ -136,23 +139,23 @@
                         <canvas id="myDonutChart" style="max-width:600px"></canvas>
                     </div>
                     <div class="col-sm">
-                        <h3>Direct Sales</h3>
+                        <h3>Sales</h3>
                         <hr>
                         <p>Current: $20,000,000.00</p>
                         <p> Projected: $34,400,000.00</p>
                         <br>
-                        <h3>Self Service</h3>
+                        <h3>Service</h3>
                         <hr>
                         <p>Current: $20,000,000.00</p>
                         <p> Projected: $34,400,000.00</p>
                     </div>
                     <div class="col-sm" style="width: 400rem !important;">
-                        <h3>Direct Sales</h3>
+                        <h3>Marketing</h3>
                         <hr>
                         <p>Current: $20,000,000.00</p>
                         <p> Projected: $34,400,000.00</p>
                         <br>
-                        <h3>Self Service</h3>
+                        <h3>Operations</h3>
                         <hr>
                         <p>Current: $20,000,000.00</p>
                         <p> Projected: $34,400,000.00</p>
@@ -199,7 +202,7 @@
             <p>Please feel free to <a href="https://cyntexa.com/contact-us/">contact us</a></p>
         </div>
     </div>
-    <button class="download-btn" onclick="generatePDF()">Download Full Report</button>
+    
 
 
 </body>
@@ -222,10 +225,22 @@
     }
 
 
+    const params = new URLSearchParams(window.location.search);
+    var currentRevenue = params.get('currentRevenue');
+    var efficiency = params.get('efficiency');
+    var projectedRevenue = parseInt(currentRevenue) + (parseInt(currentRevenue) * parseFloat(efficiency)) / 100;
+    var additionalRevenue = (parseInt(projectedRevenue) - parseInt(currentRevenue))
+
+    document.getElementById('additionalRevenue1').innerHTML = '$' + projectedRevenue;
+    document.getElementById('additionalRevenue').innerHTML =  '$' + additionalRevenue;
+    document.getElementById('currentRevenue1').innerHTML = '$' +  currentRevenue;
+    document.getElementById('currentRevenue').innerHTML = '$' + currentRevenue;
+    document.getElementById('efficiency').innerHTML = efficiency + '%';
+
     var xValues = ["Current Revenue", "Projected Revenue"];
 
     //add current revenue value at index 0 and projected value at index 1
-    var yValues = [55.5, 83, 0, 100];
+    var yValues = [currentRevenue, projectedRevenue, 0];
     var barColors = ["rgb(132, 107, 137)", "rgb(56, 12, 64)"];
 
     new Chart("myChart", {
@@ -266,7 +281,7 @@
                     ],
                 },
             ],
-            labels: ['Direct Sales', 'Partner', 'Self Service', 'Marketing'],
+            labels: ['Sales', 'Service', 'Marketing', 'Operations'],
         },
         options: {
             plugins: {
