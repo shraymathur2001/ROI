@@ -351,7 +351,13 @@ function checkallNextpages(pagenumber) {
     }
   }
   else if (CurrentPage === 'Sales Cloud') {
-    isInputValueNotEmpty(selectedValues.SalesforceProducts[CurrentPage][0], pagenumber);
+    try {
+      isInputValueNotEmpty(selectedValues.SalesforceProducts[CurrentPage][0], pagenumber);
+   
+    } catch (error) {
+      isInputValueNotEmpty(undefined, pagenumber);
+
+    }
   }
   else if (CurrentPage === 'Marketing Cloud') {
     isInputValueNotEmpty(selectedValues.SalesforceProducts[CurrentPage][0], pagenumber);

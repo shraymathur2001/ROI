@@ -42,7 +42,7 @@ class CaluclateROI {
             setTimeout(() => {
                 console.log('Efficiency :- ', efficiency);
                 res.send({ "Efficiency": efficiency })
-            }, 100);
+            }, 5000);
 
         } catch (error) {
             res.send({ "Failed": "Something went wrong" })
